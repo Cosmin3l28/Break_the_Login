@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>AuthX - Sign In</title>
+</head>
+<body>
+    <h2>Autentificare în sistemul AuthX</h2>
+    <form id="loginForm">
+        <input type="email" id="email" placeholder="Adresa de email" required><br><br>
+        <input type="password" id="password" placeholder="Parola" required><br><br>
+        <button type="button" onclick="handleLogin()">Sign In</button>
+        <p><a href="/forgot-password">Am uitat parola?</a></p>
+    </form>
+    
+    <p id="error-msg" style="color: red;"></p>
+    <p>Nu ai cont? <a href="/register">Înregistrează-te aici</a></p>
+
+    <script>
+        async function handleLogin() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorP = document.getElementById('error-msg');
+
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Succes: salvăm token-ul (vulnerabil, în localStorage) și mergem la dashboard
+                localStorage.setItem('token', data.token);
+                window.location.href = '/dashboard';
+            } else {
+                // VULNERABILITATE: Afișăm eroarea exactă (User Enumeration) [cite: 14]
+                errorP.innerText = data.error;
+            }
+        }
+    </script>
+</body>
+</html>

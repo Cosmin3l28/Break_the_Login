@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AuthX - Dashboard</title>
+</head>
+<body>
+    <h2>Bine ai venit în sistemul AuthX!</h2>
+    <p>Aceasta este o zonă protejată.</p>
+    <button onclick="logout()">Logout</button>
+
+    <script>
+        // Verificăm dacă utilizatorul are un token
+        if (!localStorage.getItem('token')) {
+            alert("Acces interzis! Te rog să te autentifici.");
+            window.location.href = '/login';
+        }
+
+        function logout() {
+            // Logout-ul șterge token-ul local
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

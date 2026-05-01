@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AuthX - Register</title>
+</head>
+<body>
+    <h2>Creare Cont Nou</h2>
+    <input type="email" id="email" placeholder="Email"><br><br>
+    <input type="password" id="password" placeholder="Parolă (min. 1 car.)"><br><br>
+    <button onclick="doRegister()">Înregistrează-te</button>
+    <p id="message"></p>
+
+    <script>
+        async function doRegister() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email, password})
+            });
+
+            const result = await response.json();
+            document.getElementById('message').innerText = result.message || result.error;
+        }
+    </script>
+</body>
+</html>
